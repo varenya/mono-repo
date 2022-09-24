@@ -1,0 +1,24 @@
+{
+  "name": "custom-query",
+  "private": "true",
+  "version": "1.0.0",
+  "description": "Building my own query cache library",
+  "scripts": {
+    "prettier": "prettier \"packages/*/{src/**,examples/**/src/**}.{md,js,jsx,ts,tsx,json}\"",
+    "format": "npm run prettier -- --write"
+  },
+  "workspaces": [
+    "./packages/*",
+    "./examples/*"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
