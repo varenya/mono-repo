@@ -4,7 +4,6 @@
  */
 
 import esbuild from "rollup-plugin-esbuild";
-import nodeResolve from "@rollup/plugin-node-resolve";
 import dts from "rollup-plugin-dts";
 import path from "path";
 
@@ -29,23 +28,28 @@ function buildConfig({ packageDir, src }) {
       },
     ],
     plugins: [esbuild()],
+    external: ["react"],
   };
 }
 
-function buildDtsConfig({ packageDir, src }) {
+function buildDTSConfig({ packageDir, src }) {
   const input = path.resolve(packageDir, src);
   return {
     input,
     output: {
-      dir: `${packageDir}/${outDir}`,
+      dir: path.resolve(packageDir, outDir),
       format: "es",
-      plugins: [dts()],
     },
+    plugins: [dts()],
   };
 }
 
 const config = [
   buildConfig({
+    packageDir: "packages/query",
+    src: "src/index.tsx",
+  }),
+  buildDTSConfig({
     packageDir: "packages/query",
     src: "src/index.tsx",
   }),
