@@ -6,7 +6,7 @@ type API_RESPONSE<T> =
   | { status: "success"; data: T }
   | { status: "error"; message: string };
 
-function useQuery<T>(key: string, asyncFunc: () => Promise<T>) {
+function useQuery<T>(asyncFunc: () => Promise<T>) {
   const [currentResponseState, setApiResponse] = useState<API_RESPONSE<T>>({
     status: "idle",
   });
