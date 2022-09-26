@@ -5,6 +5,7 @@
   "description": "Building my own query cache library",
   "scripts": {
     "build": "rollup -c rollup.config.js",
+    "build:watch": "rollup -c rollup.config.js --watch",
     "prettier": "prettier \"packages/*/{src/**,examples/**/src/**}.{md,js,jsx,ts,tsx,json}\"",
     "format": "npm run prettier -- --write"
   },
