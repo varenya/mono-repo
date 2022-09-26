@@ -6,7 +6,34 @@ type API_RESPONSE<T> =
   | { status: "success"; data: T }
   | { status: "error"; message: string };
 
-function useQuery<T>(asyncFunc: () => Promise<T>) {
+type Result<T> = { error: string } | T;
+function createCache<T>() {
+  const cache = new Map<string, Result<T>>();
+  function addCache(key: string, promise: Promise<T>) {
+    promise.then(
+      (value) => {
+        cache.set(key, value);
+      },
+      () => {
+        cache.set(key, { error: "error resolving the promise" });
+      }
+    );
+  }
+  function read(key: string): Result<T> {
+    const result = cache.get(key);
+    if (!!result) {
+      return result;
+    } else {
+      throw new Error("no such query");
+    }
+  }
+  return {
+    addCache,
+    read,
+  };
+}
+
+function useQuery<T>(_key: string, asyncFunc: () => Promise<T>) {
   const [currentResponseState, setApiResponse] = useState<API_RESPONSE<T>>({
     status: "idle",
   });
@@ -15,7 +42,8 @@ function useQuery<T>(asyncFunc: () => Promise<T>) {
       try {
         setApiResponse({ status: "loading" });
         const promise = asyncFunc();
-        setApiResponse({ status: "success", data: await promise });
+        const data = await promise;
+        setApiResponse({ status: "success", data });
       } catch {
         setApiResponse({
           status: "error",
